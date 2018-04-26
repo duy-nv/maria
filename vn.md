@@ -2,7 +2,7 @@
 
 ### [](https://gist.github.com/NgVanYud/835237bb79af9a6d013d7d3047b44c57#a-mini-lesson-in-compound-indexes-composite-indexes) bài học về "tổ hợp các chỉ mục"
 
-Tài liệu này bắt đầu tầm thường và có lẽ nhàm chán, nhưng lại đưa đến nhiều thông tin thú vị hơn, không chừng những điều bạn biết về cách MariaDB và lập chỉ mục MySQL hoạt động.
+Tài liệu này bắt đầu có vẻ tầm thường và nhàm chán, nhưng lại đưa đến nhiều thông tin thú vị hơn, không chừng những điều bạn biết về cách MariaDB và lập chỉ mục MySQL hoạt động.
 
 Điều này cũng được giải thích [EXPLAIN][1] (ở một mức độ nào đó).
 
@@ -12,7 +12,7 @@ Hầu hết điều này cũng áp dụng cho các cơ sở dữ liệu không p
 
 Câu hỏi đặt ra là "Andrew Johnson là tổng thống của Hoa Kỳ khi nào?".
 
-Bảng 'President' sẽ như sau
+Bảng 'Presidents' sẽ như sau
 
 +-----+------------+----------------+-----------+
 | seq | last_name  | first_name     | term      |
@@ -47,7 +47,7 @@ Một vài INDEX để thử...
 
 ### [](https://gist.github.com/NgVanYud/835237bb79af9a6d013d7d3047b44c57#no-indexes)Không indexes
 
-Vâng, tôi đang giả vờ một chút ở đây. Tôi có một khóa CHÍNH trên `seq`, nhưng điều đó không có lợi thế về truy vấn chúng ta đang nghiên cứu
+Vâng, tôi đang giả lập một chút ở đây. Tôi có một khóa CHÍNH trên `seq`, nhưng điều đó không có lợi thế về truy vấn chúng ta đang nghiên cứu
 
 mysql&gt;  SHOW CREATE TABLE Presidents G
 CREATE TABLE `presidents` (
@@ -94,7 +94,7 @@ Trước tiên, hãy mô tả cách InnoDB lưu trữ và sử dụng các chỉ
 
 ### [](https://gist.github.com/NgVanYud/835237bb79af9a6d013d7d3047b44c57#indexfirst_name-indexlast_name)INDEX(first_name), INDEX(last_name)
 
-Người mới, một khi anh ta biết về lập chỉ mục, quyết định lập chỉ mục nhiều cột, mỗi cột một lần. Nhưng... 
+Người mới làm quen, một khi anh ta biết về lập chỉ mục, quyết định lập chỉ mục nhiều cột, mỗi cột một lần. Nhưng... 
 MySQL hiếm khi sử dụng nhiều hơn một chỉ mục tại một thời điểm trong một truy vấn. Vì vậy, nó sẽ phân tích các chỉ mục khả thi.
 
 - first_name -- có 2 hàng có thể (một do BTree tìm kiếm, sau đó quét liên tục) 
@@ -160,7 +160,7 @@ Mọi thứ đều tương tự như sử dụng "hợp chất", ngoại trừ v
 - Điều gì sẽ xảy ra nếu bạn xáo trộn các trường trong INDEX? Trả lời: Nó có thể tạo nên sự khác biệt lớn. Xem thêm sau một phút nữa.
 - Điều gì sẽ xảy ra nếu có thêm trường vào cuối? Trả lời: Tác hại tối thiểu; có thể rất nhiều (ví dụ, 'bao gồm')..
 - Reduncancy? Đó là, nếu bạn có cả hai thứ này: INDEX (a), INDEX (a, b)? Trả lời: Reduncy chi phí một cái gì đó trên INSERTs; nó ít khi hữu ích cho các SELECT.
-- Tiếp đầu ngữ? Tức là, INDEX (last_name (5). First_name (5)) Trả lời: Đừng bận tâm; nó hiếm khi giúp ích. (Chi tiết trong một chủ đề khác.)
+- Tiền tố? Tức là, INDEX (last_name (5). First_name (5)) Trả lời: Đừng bận tâm; nó hiếm khi giúp ích. (Chi tiết trong một chủ đề khác.)
 
 ### [](https://gist.github.com/NgVanYud/835237bb79af9a6d013d7d3047b44c57#more-examples)Thêm ví dụ:
 
